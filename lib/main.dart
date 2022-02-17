@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'DeliMeals',
       theme: ThemeData(
+        backgroundColor: Colors.white.withOpacity(0.92),
         primarySwatch: Colors.pink,
         canvasColor: const Color.fromRGBO(255, 254, 229, 1),
         fontFamily: 'Raleway',
@@ -33,7 +34,8 @@ class MyApp extends StatelessWidget {
       ),
       home: const CategoriesScreen(),
       routes: {
-        const CategoryMealsScreen().routeName: (ctx) => const CategoryMealsScreen(),
+        const CategoryMealsScreen().routeName: (ctx) =>
+            const CategoryMealsScreen(),
         const MealDetailScreen().routeName: (ctx) => const MealDetailScreen(),
       },
     );

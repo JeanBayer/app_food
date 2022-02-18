@@ -50,7 +50,7 @@ class MealItem extends StatelessWidget {
   void mealDetailScreen(BuildContext ctx) {
     Navigator.pushNamed(
       ctx,
-      MealDetailScreen().routeName,
+      MealDetailScreen.routeName,
       arguments: id,
     );
   }

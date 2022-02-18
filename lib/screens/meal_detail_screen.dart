@@ -5,7 +5,28 @@ import '../dummy_data.dart';
 class MealDetailScreen extends StatelessWidget {
   const MealDetailScreen({Key? key}) : super(key: key);
 
-  final routeName = '/meal-detail';
+  static const routeName = '/meal-detail';
+
+  Widget sectionBuildText(BuildContext ctx, String text) {
+    return Container(
+      margin: const EdgeInsets.all(15),
+      child: Text(
+        text,
+        style: Theme.of(ctx).textTheme.headline6,
+      ),
+    );
+  }
+
+  Widget sectionBuildContainer(Widget child) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+      ),
+      height: 250,
+      width: double.infinity,
+      child: child,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +36,7 @@ class MealDetailScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(title: Text(selectedMeal.title)),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -27,22 +48,9 @@ class MealDetailScreen extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            Text(
-              "Ingredients",
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 10,
-              ),
-              margin: const EdgeInsets.only(top: 10),
-              height: 250,
-              width: double.infinity,
-              child: ListView.builder(
+            sectionBuildText(context, "Ingredients"),
+            sectionBuildContainer(
+              ListView.builder(
                 itemBuilder: (ctx, index) {
                   return Card(
                     color: Colors.white,
@@ -62,6 +70,29 @@ class MealDetailScreen extends StatelessWidget {
                 itemCount: selectedMeal.ingredients.length,
               ),
             ),
+            sectionBuildText(context, "Steps"),
+            sectionBuildContainer(
+              ListView.builder(
+                itemBuilder: (ctx, index) {
+                  return Column(
+                    children: [
+                      ListTile(
+                        tileColor: Colors.white,
+                        leading: CircleAvatar(
+                          child: Text("#${index + 1}"),
+                        ),
+                        title: Text(selectedMeal.steps[index]),
+                      ),
+                      const Divider()
+                    ],
+                  );
+                },
+                itemCount: selectedMeal.steps.length,
+              ),
+            ),
+            const SizedBox(
+              height: 50,
+            )
           ],
         ),
       ),

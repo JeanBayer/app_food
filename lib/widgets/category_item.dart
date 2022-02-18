@@ -16,7 +16,7 @@ class CategoryItem extends StatelessWidget {
 
   void selectItem(BuildContext ctx) {
     Navigator.of(ctx).pushNamed(
-      const CategoryMealsScreen().routeName,
+      CategoryMealsScreen.routeName,
       arguments: {
         'id': id,
         'title': title,
@@ -32,7 +32,7 @@ class CategoryItem extends StatelessWidget {
         color: Colors.transparent,
         elevation: 5,
         child: Container(
-          padding: EdgeInsets.all(15),
+          padding: const EdgeInsets.all(15),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [

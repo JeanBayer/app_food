@@ -26,6 +26,7 @@ class MainDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: Theme.of(context).backgroundColor.withOpacity(0.95),
       child: Column(
         children: <Widget>[
           Container(
@@ -39,7 +40,7 @@ class MainDrawer extends StatelessWidget {
               style: TextStyle(
                   fontWeight: FontWeight.w900,
                   fontSize: 30,
-                  color: Theme.of(context).primaryColor),
+                  color: Theme.of(context).backgroundColor),
             ),
           ),
           const SizedBox(

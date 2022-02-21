@@ -3,43 +3,51 @@ import 'package:flutter/material.dart';
 import '../dummy_data.dart';
 
 class MealDetailScreen extends StatelessWidget {
-  const MealDetailScreen({Key? key}) : super(key: key);
-
   static const routeName = '/meal-detail';
 
-  Widget sectionBuildText(BuildContext ctx, String text) {
+  final Function toggleFavorite;
+  final Function isFavorite;
+
+  const MealDetailScreen(this.toggleFavorite, this.isFavorite, {Key? key})
+      : super(key: key);
+
+  Widget buildSectionTitle(BuildContext context, String text) {
     return Container(
-      margin: const EdgeInsets.all(15),
+      margin: const EdgeInsets.symmetric(vertical: 10),
       child: Text(
         text,
-        style: Theme.of(ctx).textTheme.headline6,
+        style: Theme.of(context).textTheme.headline6,
       ),
     );
   }
 
-  Widget sectionBuildContainer(Widget child) {
+  Widget buildContainer(Widget child) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 10,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(10),
       ),
-      height: 250,
-      width: double.infinity,
+      margin: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
+      height: 150,
+      width: 300,
       child: child,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final mealId = ModalRoute.of(context)?.settings.arguments as String;
+    final mealId = ModalRoute.of(context)!.settings.arguments as String;
     final selectedMeal = DUMMY_MEALS.firstWhere((meal) => meal.id == mealId);
-
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(title: Text(selectedMeal.title)),
+      backgroundColor: Theme.of(context).backgroundColor.withOpacity(0.95),
+      appBar: AppBar(
+        title: Text(selectedMeal.title),
+      ),
       body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
+          children: <Widget>[
             SizedBox(
               height: 300,
               width: double.infinity,
@@ -48,53 +56,51 @@ class MealDetailScreen extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            sectionBuildText(context, "Ingredients"),
-            sectionBuildContainer(
+            buildSectionTitle(context, 'Ingredients'),
+            buildContainer(
               ListView.builder(
-                itemBuilder: (ctx, index) {
-                  return Card(
-                    color: Colors.white,
-                    elevation: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 10,
-                      ),
-                      child: Text(
-                        selectedMeal.ingredients[index],
-                        style: const TextStyle(fontSize: 18),
-                      ),
+                itemBuilder: (ctx, index) => Card(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 5,
+                      horizontal: 10,
                     ),
-                  );
-                },
+                    child: Text(
+                      selectedMeal.ingredients[index],
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
                 itemCount: selectedMeal.ingredients.length,
               ),
             ),
-            sectionBuildText(context, "Steps"),
-            sectionBuildContainer(
+            buildSectionTitle(context, 'Steps'),
+            buildContainer(
               ListView.builder(
-                itemBuilder: (ctx, index) {
-                  return Column(
-                    children: [
-                      ListTile(
-                        tileColor: Colors.white,
-                        leading: CircleAvatar(
-                          child: Text("#${index + 1}"),
-                        ),
-                        title: Text(selectedMeal.steps[index]),
+                itemBuilder: (ctx, index) => Column(
+                  children: [
+                    ListTile(
+                      leading: CircleAvatar(
+                        child: Text('# ${(index + 1)}'),
                       ),
-                      const Divider()
-                    ],
-                  );
-                },
+                      title: Text(
+                        selectedMeal.steps[index],
+                      ),
+                    ),
+                    const Divider()
+                  ],
+                ),
                 itemCount: selectedMeal.steps.length,
               ),
             ),
-            const SizedBox(
-              height: 50,
-            )
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          isFavorite(mealId) ? Icons.star : Icons.star_border,
+        ),
+        onPressed: () => toggleFavorite(mealId),
       ),
     );
   }
